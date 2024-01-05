@@ -1,0 +1,43 @@
+name: test
+on: [push, workflow_dispatch]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # This installs cocotb and iverilog
+      - name: Install oss-cad-suite
+        uses: YosysHQ/setup-oss-cad-suite@v2
+        with:
+          python-override: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          yosys --version
+          iverilog -V
+          cocotb-config --libpython
+          cocotb-config --python-bin
+
+      - name: Run tests
+        run: |
+          cd test
+          make clean
+          make
+          # make will return success even if the test fails, so check for failure in the results.xml
+          ! grep failure results.xml
+
+      - name: Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: "test/results.xml"
+        if: always()
+
+      - name: upload vcd
+        if: success() || failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-vcd
+          path: |
+            test/tb.vcd
+            test/result.xml
