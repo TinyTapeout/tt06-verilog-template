@@ -7,15 +7,20 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      # This installs cocotb and iverilog
-      - name: Install oss-cad-suite
-        uses: YosysHQ/setup-oss-cad-suite@v2
+      - name: Install iverilog
+        shell: bash
+        run: sudo apt-get update && sudo apt-get install -y iverilog
+
+      # Set Python up and install cocotb
+      - name: Setup python
+        uses: actions/setup-python@v4
         with:
-          python-override: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - run: |
-          yosys --version
-          iverilog -V
+          python-version: '3.11'
+
+      - name: Install cocotb 1.8.x
+        shell: bash
+        run: |
+          pip install cocotb~=1.8.0
           cocotb-config --libpython
           cocotb-config --python-bin
 
