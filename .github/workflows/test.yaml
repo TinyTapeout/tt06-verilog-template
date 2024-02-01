@@ -13,7 +13,7 @@ jobs:
 
       # Set Python up and install cocotb
       - name: Setup python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
@@ -33,14 +33,14 @@ jobs:
           ! grep failure results.xml
 
       - name: Test Summary
-        uses: test-summary/action@v2
+        uses: test-summary/action@v2.2
         with:
           paths: "test/results.xml"
         if: always()
 
       - name: upload vcd
         if: success() || failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-vcd
           path: |
