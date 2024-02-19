@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2024 Your Name
+ * Copyright (c) 2023 Your Name
  * SPDX-License-Identifier: Apache-2.0
  */
 
 `define default_netname none
-
+`include "multiply.v"
 module tt_um_example (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
@@ -16,9 +16,33 @@ module tt_um_example (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
-  assign uio_out = 0;
-  assign uio_oe  = 0;
+  reg [3:0] a,b;
+  wire [7:0] result;
+
+
+always @(*)begin
+  if(ena)begin
+    a <= ui_in[3:0];
+    b <= ui_in[7:4];
+  end
+  else begin
+    a <= a;
+    b <= b;
+  end
+end
+
+  assign uio_out = 8'd0;
+  assign uio_oe  = 8'd0;
+
+
+
+  multiply m1(
+    .a(a),
+    .b(b),
+    .result(result)
+  );
+
+  assign uo_out = result;
+
 
 endmodule
