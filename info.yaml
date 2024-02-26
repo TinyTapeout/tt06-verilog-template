@@ -11,17 +11,17 @@ project:
   tiles: "1x1"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
 
   # Your top module name must start with "tt_um_". Make it unique by including your github username:
-  top_module:  "src/statemachine_dft_compiled.v"
+  top_module:  "tt_um_XianshunSong"
   
   # List your project's source files here. Source files must be in ./src and you must list each source file separately, one per line:
   source_files:        
-    - "project.v"
+    - "statemachine_dft_compiled.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 pinout:
   # Inputs
-  ui[0]: ""
-  ui[1]: ""
+  ui[0]: "clk"
+  ui[1]: "led"
   ui[2]: ""
   ui[3]: ""
   ui[4]: ""
@@ -30,10 +30,10 @@ pinout:
   ui[7]: ""
 
   # Outputs
-  uo[0]: ""
-  uo[1]: ""
-  uo[2]: ""
-  uo[3]: ""
+  uo[0]: "led[0]"
+  uo[1]: "led[1]"
+  uo[2]: "led[2]"
+  uo[3]: "led[3]"
   uo[4]: ""
   uo[5]: ""
   uo[6]: ""
